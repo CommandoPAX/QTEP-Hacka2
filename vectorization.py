@@ -18,12 +18,26 @@ def rho_derivative(rho, H, L) :
     # Return the sum of the two parts :
     return hamiltonian_part + linblad_part
 
+def RungeKutta(x, y, dx, dydx):
+    
+    # Calculate slopes
+    k1 = dx*dydx(x, y)
+    k2 = dx*dydx(x+dx/2., y+k1/2.)
+    k3 = dx*dydx(x+dx/2., y+k2/2.)
+    k4 = dx*dydx(x+dx, y+k3)
+    
+    # Calculate new x and y
+    y = y + 1./6*(k1+2*k2+2*k3+k4)
+    x = x + dx
+    
+    return x, y
+
 def solver(rho,f) :
     rho_size = rho.size
 
     vectorized_rho = rho.reshape(rho_size,1)
-
-    result = spi.RK45(f,0,vectorized_rho,1)
+    
+    result = RungeKutta(f,0,vectorized_rho,1)
     
     return result
 
