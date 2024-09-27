@@ -62,7 +62,7 @@ def evolution_to_feed_rk4(t, vec, f, rho_dims):
     return rho.reshape(rho.size)
 
 def Channel(rho : np.array, Hamilt : np.array) : 
-    return np.dot(Hamilt, np.dot(rho, Hamilt.conj().T))
+    return np.dot(np.dot(Hamilt, rho), Hamilt.conj().T)
 
 def R(Lambda : np.array) : 
     TransferMatrix = np.zeros((4,4),dtype=complex)
