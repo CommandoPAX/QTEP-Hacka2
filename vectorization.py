@@ -60,8 +60,8 @@ def master_derivative(rho, H, jump_operators):
     # Compute non-Hamiltonian part:
     for jump_operator in jump_operators:
         jump_part += (np.dot(np.dot(jump_operator, rho), jump_operator.conj().T)
-                      - 0.5 * np.dot(jump_operator.conj().T, np.dot(jump_operator, rho))
-                      - 0.5 * np.dot(rho, np.dot(jump_operator.conj().T, jump_operator)))
+                      - 0.5 * np.dot(np.dot(jump_operator.conj().T, jump_operator), rho)
+                      - 0.5 * np.dot(np.dot(rho, jump_operator.conj().T), jump_operator))
 
     # Return the sum of the two parts:
     return hamiltonian_part + jump_part
@@ -126,5 +126,5 @@ if __name__ == "__main__":
     plt.legend()
     plt.title("Evolution of Bloch Vector Components")
     plt.grid()
-    plt.savefig("figures/bloch_vector_evolution.png")
+    plt.savefig("bloch_vector_evolution.png")
     plt.close()
