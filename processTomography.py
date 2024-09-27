@@ -69,7 +69,7 @@ def R(Lambda : np.array) :
     sigmas = [identity, pauli_x, pauli_y, pauli_z]
     for i in range(0,3) : 
         for j in range(0,3) : 
-            TransferMatrix[i,j] = (1/2)* np.trace(np.dot(sigmas[i], np.dot(Lambda, sigmas[j])))
+            TransferMatrix[i,j] = (1/2)* np.trace(np.dot(sigmas[i], Channel(sigmas[j],Lambda)))
     return TransferMatrix
 
 if __name__ == "__main__" : 
