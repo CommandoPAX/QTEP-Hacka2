@@ -87,4 +87,4 @@ if __name__ == "__main__" :
     print('\nHamiltonian:\n', Hamiltonian)
     
     #Quantum process tomography part
-    print("'\nHamiltonian:\n", R(Hamiltonian))
+    print("'\nTransfer Matrix:\n", R(Hamiltonian))
