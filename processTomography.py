@@ -67,8 +67,8 @@ def Channel(rho : np.array, Hamilt : np.array) :
 def R(Lambda : np.array) : 
     TransferMatrix = np.zeros((4,4),dtype=complex)
     sigmas = [identity, pauli_x, pauli_y, pauli_z]
-    for i in range(0,3) : 
-        for j in range(0,3) : 
+    for i in range(0,4) : 
+        for j in range(0,4) : 
             TransferMatrix[i,j] = (1/2)* np.trace(np.dot(sigmas[i], Channel(sigmas[j],Lambda)))
     return TransferMatrix
 
