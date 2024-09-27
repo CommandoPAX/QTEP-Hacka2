@@ -22,6 +22,14 @@ Recipe is as follows:
 pauli_x = np.array([[0, 1], [1, 0]])
 pauli_y = np.array([[0, -1j], [1j, 0]])
 pauli_z = np.array([[1, 0], [0, -1]])
+sigma_m = np.array([[0,0],[1,0]]) 
+sigma_p = np.array([[0,1],[0,0]])
+
+def op_at_i(op,i) : 
+    '''
+    Creates the operator that applies the operator op on the ith qubit
+    '''
+
 
 def ket_to_density(ket):
     '''
@@ -45,7 +53,7 @@ def solver(rho_0, evolution, t_span=[0, 10]):
 
     vectorized_rho = rho_0.reshape(rho_size)
     
-    solution = spi.solve_ivp(evolution, t_span, vectorized_rho, method='RK45', t_eval=np.linspace(0, 10, 100))
+    solution = spi.solve_ivp(evolution, t_span, vectorized_rho, method='RK45', t_eval=np.linspace(t_span[0],t_span[1],100))
     
     return solution
 
@@ -81,18 +89,18 @@ def evolution_to_feed_rk4(t, vec, f, rho_dims):
 if __name__ == "__main__":
 
     # Initial state
-    r_0 = np.array([1, 1, 5])
+    r_0 = np.array([0, 1, 0])
     r_0 = r_0 / np.linalg.norm(r_0)
     rho_0 = bloch_vector_to_density(r_0)
 
     print ('\nInitial state:\n', rho_0)
 
     # Evolution, please define also the correct jump rates
-    time = 10
+    time = np.pi/2
     Hamiltonian = np.array([[1, 0], [0, -1]])  # Evolution is a simple rotation around the z-axis
     dephasing_rate = 0.1
     Jump_list = [np.sqrt(dephasing_rate) * np.array([[1, 0], [0, -1]])]
-
+    #Jump_list = []
     print('\nHamiltonian:\n', Hamiltonian)
     
     # Derivative test
