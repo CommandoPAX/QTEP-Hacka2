@@ -20,47 +20,6 @@ def bloch_vector_to_density(r):
                   r[1] * np.array([[0, -1j], [1j, 0]]) +
                   r[2] * np.array([[1, 0], [0, -1]]))
 
-def solver(rho_0, evolution, t_span=[0, 10]):
-    '''
-    Solves the system by veccing the initial state and feeding it into the RK45 solver
-    '''
-    rho_size = rho_0.size
-
-    vectorized_rho = rho_0.reshape(rho_size)
-    
-    solution = spi.solve_ivp(evolution, t_span, vectorized_rho, method='RK45', t_eval=np.linspace(0, 10, 100))
-    
-    return solution
-
-def master_derivative(rho, H, jump_operators):
-    '''
-    Computes the derivative of the density matrix rho given the Hamiltonian H and the list of jump operators
-    '''
-    # Compute Hamiltonian part:
-    hamiltonian_part = -1j * (np.dot(H, rho) - np.dot(rho, H))
-    jump_part = 0
-
-    # Compute non-Hamiltonian part:
-    for jump_operator in jump_operators:
-        jump_part += (np.dot(np.dot(jump_operator, rho), jump_operator.conj().T)
-                      - 0.5 * np.dot(jump_operator.conj().T, np.dot(jump_operator, rho))
-                      - 0.5 * np.dot(rho, np.dot(jump_operator.conj().T, jump_operator)))
-
-    # Return the sum of the two parts:
-    return hamiltonian_part + jump_part
-
-def evolution_to_feed_rk4(t, vec, f, rho_dims):
-    '''
-    Reshapes the vector into a matrix, computes the derivative and reshapes it back into a vector.
-    This way it can be refed into the RK45 solver.
-    '''
-    # Shape into matrix
-    rho = vec.reshape(rho_dims)
-    # Evolve using master equation
-    rho = f(rho)
-    # Reshape into vector
-    return rho.reshape(rho.size)
-
 def Channel(rho : np.array, Hamilt : np.array) : 
     return np.dot(np.dot(Hamilt, rho), Hamilt.conj().T)
 
